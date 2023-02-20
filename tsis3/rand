@@ -1,0 +1,28 @@
+
+from math import *
+class Point():
+   def __init__(self, x, y, z ):
+     a1 = float(input())
+     b1 = float(input())
+     pta1 = int(input())
+     ptb1 = int(input())
+     con+=
+     self.pta1 = pta1
+     self.ptb1 = ptb1
+     self.a1 = a1
+     self.b1 = b1
+   def show(self):
+     print(self.a1, self.b1)
+   def move(self):
+     self.a1 += self.a1
+     self.b1 += self.b1
+     print(self.a1, self.b1)
+   def dist(self):
+     da1 = self.pta1 - self.a1
+     db1 = self.ptb1 - self.b1
+     print(sqrt(da1 ** 2 + db1 ** 2))
+nPoi = Point(8, 5, 6,7)
+cont=pont()
+nPoi.show()
+nPoi.move()
+nPoi.dist()
