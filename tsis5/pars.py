@@ -1,4 +1,5 @@
 import re
+
 #1
 pattern1= re.compile(r'a+b*')
 print(pattern1.match(input()))
