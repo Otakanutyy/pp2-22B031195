@@ -5,11 +5,12 @@ from tkinter import *
 from tkinter import filedialog
 
 Playlist=[]
-
+way="C:/Users/Ислам/Documents/week1/pp2-22B031195/py_game/audio/"
 allsongs = os.listdir(r"C:/Users/Ислам/Documents/week1/pp2-22B031195/py_game/audio")
 for song in allsongs:
        if song.endswith(".mp3"):
-           Playlist.append(song)
+           song1=way+song
+           Playlist.append(song1)
 
 pg.init()
 mix.init()
@@ -17,9 +18,6 @@ clock=pg.time.Clock()
 
 screen=pg.display.set_mode((500, 250))
 pg.display.set_caption("music player")
-
-icon=pg.image.load("iconn.png")
-pg.display.set_icon(icon)
 
 bg=pg.Surface((500,500))
 pg.Surface.fill(bg,(241,203,255))
