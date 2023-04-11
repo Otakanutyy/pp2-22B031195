@@ -13,12 +13,19 @@ pg.init()
 screen=pg.display.set_mode((cell_s*20,cell_s*20))
 pg.display.set_caption("simplesnake")
 clock=pg.time.Clock()
-shashlyk=pg.image.load("apple.png").convert_alpha()
+apple=pg.image.load("apple.png").convert_alpha()
+rat=pg.image.load("rat.jpg").convert_alpha()
 bg=pg.image.load("bg.png").convert_alpha()
 bgdead=pg.image.load("bgdead.png").convert_alpha()
 icon=pg.image.load("icon.png").convert_alpha()
 pg.display.set_icon(icon)
 game_font = pg.font.Font('Mono.ttf', 25)
+
+
+ratform=1
+timer=0
+apple_n=0
+rat_n=0
 
 listofx=list(range(0,19))
 listofy=list(range(0,19))
@@ -30,8 +37,13 @@ class FRUIT:
         self.newpos()
     def draw_f(self):
         fruit_rect=pg.Rect(self.pos.x*cell_s, self.pos.y*cell_s, cell_s, cell_s)
-        screen.blit(shashlyk,fruit_rect)
+        if ratform==0:
+            screen.blit(rat, fruit_rect)
+        else:
+            screen.blit(apple,fruit_rect)
     def newpos(self):
+        global ratform
+        ratform =random.randint(0,4)
         self.x=random.choice(listofx)
         self.y=random.choice(listofy)
         self.pos=vt(self.x, self.y)
@@ -170,6 +182,12 @@ class MAIN:
 
     def check(self):
         if self.fruit.pos==self.snake.body[0]:
+            if ratform==0:
+                global rat_n
+                rat_n+=1
+            else:
+                global apple_n
+                apple_n+=1
             self.fruit.newpos()
             self.snake.newblock()
             self.snake.play_crunch_sound()
@@ -193,11 +211,11 @@ class MAIN:
         score_x = int(cell_s * 20 - 60)
         score_y = int(cell_s * 20 - 40)
         score_rect = score_surface.get_rect(center = (score_x,score_y))
-        apple_rect = shashlyk.get_rect(midright = (score_rect.left,score_rect.centery))
+        apple_rect = apple.get_rect(midright = (score_rect.left,score_rect.centery))
         bg_rect = pg.Rect(apple_rect.left,apple_rect.top,apple_rect.width + score_rect.width + 6,apple_rect.height)
         pg.draw.rect(screen,(255,255,255),bg_rect)
         screen.blit(score_surface,score_rect)
-        screen.blit(shashlyk,apple_rect)
+        screen.blit(apple,apple_rect)
         screen.blit(level_surface,level_rect)
         pg.draw.rect(screen,(0,0,0),bg_rect,2)
 
@@ -231,6 +249,12 @@ while(True):
             if event.key==pg.K_RIGHT:
                 if main.snake.dirc.x!=-1:
                     main.snake.dirc=vt(1, 0)
+    
+    if ratform==0:
+        timer+=1
+    if ratform==0 and timer>=500:
+        ratform=random.randint(1,5)
+        timer=0
             
     speed=200-((len(main.snake.body) - 3)//10)*5
     screen.fill((25,24,56))

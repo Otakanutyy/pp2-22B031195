@@ -1,4 +1,5 @@
 import pygame as pg
+from sys import exit
 
 #CONSTANTS
 WIDTH, HEIGHT = 800, 600
@@ -6,7 +7,7 @@ WIDTH, HEIGHT = 800, 600
 
 pg.init()
 screen=pg.display.set_mode((WIDTH,HEIGHT))
-pg.display.set_caption("simple_paint")
+pg.display.set_caption("paint 2.0")
 clock=pg.time.Clock()
 
 class BUTTONF:
@@ -45,15 +46,15 @@ class BUTTONC:
 
 
 buttonsf=[]
-for i in range(0,4):
-    name= "icon"+str(i)+".png"
+for i in range(0,6):
+    name="icon"+str(i)+".png"
     j=50
     k=50+100*i
     buttonsf.append(BUTTONF(name,j,k ))
 
 buttonsc=[]
-for i in range(0,4):
-    name= "color"+str(i)+".png"
+for i in range(0,6):
+    name="color"+str(i)+".png"
     j=750
     k=50+100*i
     buttonsc.append(BUTTONC(name,j,k ))
@@ -67,17 +68,18 @@ brush=pg.image.load(figure+curcolor+".png")
 
 screen.fill((255,255,255))
 for button in buttonsf:
-    (button).draw()
+    button.draw()
 for button in buttonsc:
-    (button).draw()
+    button.draw()
 pg.display.update()
 
-running = True
-while running:
+
+while True:
     x,y=pg.mouse.get_pos()
     for event in pg.event.get():
         if event.type==pg.QUIT:
-            running = False
+            pg.quit()
+            exit()
         if event.type==pg.KEYDOWN:
             if event.key==pg.K_DOWN:
                 if size>=20:
@@ -108,3 +110,5 @@ while running:
             pg.display.update()
 
     clock.tick(60)
+
+
