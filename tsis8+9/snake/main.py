@@ -170,7 +170,7 @@ class MAIN:
             self.draw_score()
         else:
             screen.blit(bgdead,(0,0))
-            text = "SCORE:"+str(len(self.snake.body) - 3)
+            text = "SCORE:"+str(rat_n*2+apple_n)
             surface = game_font.render(text,True,(255,255,255))
             score_rect = surface.get_rect(center = (10*cell_s,15*cell_s))
             text2 = "LEVEL:"+str((len(self.snake.body) - 3)//10+1)

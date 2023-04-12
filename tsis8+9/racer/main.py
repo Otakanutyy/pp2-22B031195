@@ -145,10 +145,12 @@ while running:
             running=False
         if event.type==INC_SPEED:
             ENEMYSPEED+=1
+            
     SCORE=ENEMY_N+SCOREMONEY//20+SCOREDIAMONDS
     text1 = f1.render("x{}".format(str(SCORE)),False,(0, 0, 0))
     text2 = f1.render("x{}".format(str(SCOREMONEY)),False,(0, 0, 0))
     text3 = f1.render("x{}".format(str(SCOREDIAMONDS)),False,(0, 0, 0))
+
     if deadscreen:
         screen.blit(bg1,(0,0))
         tex1=f2.render("TOTAL SCORE:{}".format(str(SCORE)),True,(0, 0, 0))
