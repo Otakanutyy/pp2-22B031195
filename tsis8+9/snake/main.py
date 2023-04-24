@@ -201,7 +201,7 @@ class MAIN:
     def endthegame(self):
         self.play_dead_sound()
         self.dead=True
-    		
+         
     def draw_score(self):
         level_text="Your level is: "+str(1+(len(self.snake.body) - 3)//10)
         level_surface=game_font.render(level_text,True,(0,0,0))
