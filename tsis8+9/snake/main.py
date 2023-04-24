@@ -1,8 +1,21 @@
 import pygame as pg
+import psycopg2 as pgsql
 from sys import exit
 import random
 import time
 from pygame.math import Vector2 as vt
+
+connection=pgsql.connect(host="localhost", dbname="postgres", user="postgres",
+                         password="Mengobrat2003", port=5432)
+cur=connection.cursor()
+
+cur.execute("""CREATE TABLE IF NOT EXISTS snake_game (
+    username VARCHAR(255),
+    user_score INT,
+    user_level INT
+);
+""")
+
 
 #CONSTANTS
 cell_s=int(36)
@@ -23,6 +36,7 @@ game_font = pg.font.Font('Mono.ttf', 25)
 
 
 ratform=1
+welcomescreen=True
 timer=0
 apple_n=0
 rat_n=0
@@ -163,7 +177,9 @@ class MAIN:
         self.dead_sound.play()
 
     def draw_all(self):
-        if not self.dead:
+        if welcomescreen:
+            screen.blit(bg,(0,0))
+        elif not self.dead:
             screen.blit(bg,(0,0))
             self.fruit.draw_f()
             self.snake.draw_s()
@@ -206,6 +222,7 @@ class MAIN:
         level_text="Your level is: "+str(1+(len(self.snake.body) - 3)//10)
         level_surface=game_font.render(level_text,True,(0,0,0))
         level_rect = level_surface.get_rect(center = (10*cell_s,20))
+        
         score_text = str(len(self.snake.body) - 3)
         score_surface = game_font.render(score_text,True,(0,0,0))
         score_x = int(cell_s * 20 - 60)
@@ -219,7 +236,39 @@ class MAIN:
         screen.blit(level_surface,level_rect)
         pg.draw.rect(screen,(0,0,0),bg_rect,2)
 
+#---------------------------------------------
+def insert(newuser):
+    cur.execute("""INSERT INTO snake_game VALUES ('{}',0,0)""".format(newuser))
 
+def update(curuser):
+    cur.execute("SELECT * FROM snake_game WHERE username='{}'".format(curuser))
+    data=cur.fetchone()
+    cur.execute("""UPDATE snake_game
+    SET user_score={}, user_level={}
+    WHERE username='{}'
+    """.format(max(data[1], apple_n+rat_n*5),max(data[2],1+(apple_n+rat_n)//10),curuser))
+    connection.commit()
+
+
+print("Enter your username:")
+user=input()
+cur.execute("SELECT count(*) FROM snake_game WHERE username='{}'".format(user))
+if cur.fetchone()[0]==0:
+    insert(user)
+    connection.commit()
+else:
+    cur.execute("SELECT * FROM snake_game WHERE username='{}'".format(user))
+    data=cur.fetchone()
+    print("User's max score:{}".format(data[1]))
+    print("User's max level:{}".format(data[2]))
+welcomescreen=False
+
+print("game will start in:")
+
+for i in range(1,4):
+    print(i)
+    time.sleep(1)
+print("go!")
 
 
 
@@ -233,6 +282,10 @@ while(True):
     for event in pg.event.get():
         if event.type==pg.QUIT:
             pg.quit()
+            pg.quit()
+            connection.commit()
+            cur.close()
+            connection.close()
             exit()
         if event.type==SCREEN_UPDATE and main.dead==False:
             main.upd()
